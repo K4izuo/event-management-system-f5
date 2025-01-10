@@ -10,7 +10,7 @@ import {
   Menu,
   Edit,
   Trash2,
-  LogOut
+  LogOut,
 } from "lucide-react";
 import axios from "axios";
 import CreateEventModal from "../EventsServices/AddEvent";
