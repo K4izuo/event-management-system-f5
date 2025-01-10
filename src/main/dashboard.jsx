@@ -10,7 +10,6 @@ import {
   Menu,
   Edit,
   Trash2,
-  LogOut,
 } from "lucide-react";
 import axios from "axios";
 import CreateEventModal from "../EventsServices/AddEvent";
@@ -28,39 +27,9 @@ const EventDashboard = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [lastUpdate, setLastUpdate] = useState(null);
   const [error, setError] = useState(null);
-  const [showUserMenu, setShowUserMenu] = useState(false);
 
   // Configure polling interval (in milliseconds)
   const POLLING_INTERVAL = 1000; // Poll every 5 seconds
-
-  const handleLogout = async () => {
-    try {
-      const response = await axios.post(`${configDB.apiUrl}/logout`, {}, {
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-      
-      if (response.data.success) {
-        localStorage.removeItem('token');
-        sessionStorage.clear();
-        
-        setTimeout(() => {
-          window.location.href = '/';
-        }, 100);
-      } else {
-        setError('Logout failed. Please try again.');
-      }
-    } catch (error) {
-      console.error('Logout error:', error);
-      
-      // Implement graceful degradation for network issues
-      localStorage.removeItem('token');
-      sessionStorage.clear();
-      window.location.href = '/';
-    }
-  };
 
   const fetchEvents = useCallback(async () => {
     try {
@@ -226,24 +195,8 @@ const EventDashboard = () => {
               <button className="p-2 text-gray-400 hover:text-gray-500">
                 <Bell className="h-6 w-6" />
               </button>
-              <div className="relative">
-                <button
-                  onClick={() => setShowUserMenu(!showUserMenu)}
-                  className="h-8 w-8 rounded-full bg-blue-500 text-white flex items-center justify-center hover:bg-blue-600 transition-colors"
-                >
-                  <span className="text-sm font-medium">JD</span>
-                </button>
-                {showUserMenu && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 border">
-                    <button
-                      onClick={handleLogout}
-                      className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      <LogOut className="h-4 w-4 mr-2" />
-                      Logout
-                    </button>
-                  </div>
-                )}
+              <div className="h-8 w-8 rounded-full bg-blue-500 text-white flex items-center justify-center">
+                <span className="text-sm font-medium">JD</span>
               </div>
             </div>
           </div>
